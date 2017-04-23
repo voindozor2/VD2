@@ -57,74 +57,31 @@ public class Third_programm {
         field [y-1] [x-1] = PLAYER_SYM;
     }
 
-    private static void Comp_turn (){
-        int x=0,y=0,turn=0,intelectual_turn=0,prev=0;
-        /*do { x = rand.nextInt(3);
-            y = rand.nextInt(3);
-        } while (!isCellOk(y,x,EMPTY_SYM));
-        */
-        if(possible_combo==win_combo-1) {
-            field [y1] [x1] = COMP_SYM;
+    private static void Comp_turn () {
+        int x = 0, y = 0, turn = 0, intelectual_turn = 0, prev = 0;
+        /*if(possible_combo(COMP_SYM)) {
+            field [y1][x1]=COMP_SYM;
         }
-        else {
-
+        else {*/
             do {
-                if (turn == 0) {
-                    x = rand.nextInt(field.length);
-                    y = rand.nextInt(field.length);
-                    if (isCellOk(y, x, EMPTY_SYM)) field[y][x] = COMP_SYM;
-                    ;
-                    intelectual_turn = rand.nextInt(4);
-                    turn++;
-                } else {
-                    switch (intelectual_turn) {
-                        case 0:
-                            if (Vector_check2(y, x, 1, 0, 1, EMPTY_SYM)) {
-                                field[y][x] = COMP_SYM;
-                                turn++;
-                            } else {
-                                intelectual_turn = rand.nextInt(4);
-                            }
-                            break;
+                x = rand.nextInt(3);
+                y = rand.nextInt(3);
+            } while (!isCellOk(y, x, EMPTY_SYM));
+            if(possible_combo() && isCellOk(y1,x1,EMPTY_SYM)) {
 
-                        case 1:
-                            if (Vector_check2(y, x, 0, 1, 1, EMPTY_SYM)) {
-                                field[y][x] = COMP_SYM;
-                                turn++;
-                            } else {
-                                intelectual_turn = rand.nextInt(4);
-                            }
-                            break;
-
-                        case 2:
-                            if (Vector_check2(y, x, 1, 1, 1, EMPTY_SYM)) {
-                                field[y][x] = COMP_SYM;
-                                turn++;
-                            } else {
-                                intelectual_turn = rand.nextInt(4);
-                            }
-                            break;
-
-                        case 3:
-                            if (Vector_check2(y, x, 1, -1, 1, EMPTY_SYM)) {
-                                field[y][x] = COMP_SYM;
-                                turn++;
-                            } else {
-                                intelectual_turn = rand.nextInt(4);
-                            }
-                            break;
-
-
-                    }
-                }
-            } while (prev==turn);
-
-        }
-        prev = turn;
+                field[y1][x1] = COMP_SYM;
+            }
+            else {
+                field[y][x] = COMP_SYM;
+            }
+            }
 
 
 
-    }
+    //}
+
+
+
 
     private static boolean Check_Draw () {
         for (int i = 0; i < field.length ; i++) {
@@ -159,21 +116,21 @@ public class Third_programm {
             for (int i = 1; i < length+1; i++) {
                 if(isCellOk(y+(vector_y*i),x+(vector_x*i),sym)){
                     combo++;
+
+                   if(isCellOk(y+(vector_y*(i+1)),x+(vector_x*(i+1)),EMPTY_SYM) || combo == length-1) {
+                        y1 = y + (vector_y * (i + 1));
+                        x1 = x + (vector_x * (i + 1));
+                    }
+
                     if(combo==length)return true;
                 }
-
-                if(isCellOk(y+(vector_y*i),x+(vector_x*i),EMPTY_SYM) && combo==length-1){
-                    x1=x;
-                    y1=y;
-                    possible_combo=combo;
-                }
-
             }
 
         }
 
     return false;
     }
+
     private static boolean Vector_check ( int x, int y , int delta_y , int delta_x , char sym ) { //указывать надо вектор равный вин стрику (указывать дельта х и дельта y)
         int a = 0;
         int combo = 0;
@@ -233,6 +190,20 @@ public class Third_programm {
         }
 
 
+
+        return false;
+    }
+
+    private static boolean possible_combo (){
+        for (int i = 0; i < field.length; i++) {
+            for (int j = 0; j < field.length; j++) {
+                if(Vector_check2(i,j,1,0,win_combo-1,PLAYER_SYM)||Vector_check2(i,j,0,1,win_combo-1,PLAYER_SYM)||Vector_check2(i,j,1,1,win_combo-1,PLAYER_SYM)||Vector_check2(i,j,1,-1,win_combo-1,PLAYER_SYM) ){
+
+                    return true;
+                }
+            }
+
+        }
 
         return false;
     }
